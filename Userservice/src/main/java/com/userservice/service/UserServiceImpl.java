@@ -3,14 +3,19 @@ package com.userservice.service;
 import com.userservice.dao.UserDAO;
 import com.userservice.dao.UserDAOImpl;
 import com.userservice.entity.User;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserDAO userDAO;
 
+    // Если нужно конструктор без параметров, можно добавить:
     public UserServiceImpl() {
         this.userDAO = new UserDAOImpl();
     }
@@ -24,7 +29,9 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = new User(name, email, age);
-        return userDAO.save(user);
+        User savedUser = userDAO.save(user);
+        log.info("Создан пользователь: {}", savedUser);
+        return savedUser;
     }
 
     @Override
@@ -46,7 +53,8 @@ public class UserServiceImpl implements UserService {
     public User updateUser(Long id, String name, String email, Integer age) {
         validateUserData(name, email, age);
 
-        User user = userDAO.findById(id).orElseThrow(() -> new IllegalArgumentException("Пользователь не найден"));
+        User user = userDAO.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Пользователь не найден"));
 
         if (!user.getEmail().equals(email) && userDAO.findByEmail(email).isPresent()) {
             throw new IllegalArgumentException("Email уже используется");
@@ -56,12 +64,20 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setAge(age);
 
-        return userDAO.update(user);
+        User updatedUser = userDAO.update(user);
+        log.info("Обновлен пользователь: {}", updatedUser);
+        return updatedUser;
     }
 
     @Override
     public boolean deleteUser(Long id) {
-        return userDAO.deleteById(id);
+        boolean deleted = userDAO.deleteById(id);
+        if (deleted) {
+            log.info("Удален пользователь с id {}", id);
+        } else {
+            log.warn("Пользователь с id {} не найден для удаления", id);
+        }
+        return deleted;
     }
 
     @Override
