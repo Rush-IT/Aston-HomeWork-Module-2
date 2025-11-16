@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(Long id, String name, String email, Integer age) {
+    public User updateUser(Integer id, String name, String email, Integer age) {
         validateUserData(name, email, age);
 
         User user = userDAO.findById(id)
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteUser(Long id) {
+    public boolean deleteUser(Integer id) {
         boolean deleted = userDAO.deleteById(id);
         if (deleted) {
             log.info("Удален пользователь с id {}", id);

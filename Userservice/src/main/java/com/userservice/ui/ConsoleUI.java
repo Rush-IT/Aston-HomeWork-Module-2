@@ -140,18 +140,18 @@ public class ConsoleUI {
         Integer age = ageStr.isEmpty() ? current.getAge() : Integer.parseInt(ageStr);
 
         User updated = userService.updateUser(id, name, email, age);
-        System.out.println("✅ Пользователь обновлен:\n" + updated);
+        System.out.println("Пользователь обновлен:\n" + updated);
     }
 
     private void deleteUser() {
         System.out.print("\nВведите ID для удаления: ");
-        Long id = Long.parseLong(scanner.nextLine().trim());
+        Integer id = Integer.parseInt(scanner.nextLine().trim());
 
         boolean deleted = userService.deleteUser(id);
         if (deleted) {
-            System.out.println("✅ Пользователь удалён");
+            System.out.println("Пользователь удалён");
         } else {
-            System.out.println("❌ Пользователь не найден");
+            System.out.println("Пользователь не найден");
         }
     }
 
