@@ -1,6 +1,7 @@
 package com.userservice.dao;
 
 import com.userservice.entity.User;
+import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +10,7 @@ public interface UserDAO {
 
     User save(User user);
 
-    Optional<User> findById(Long id);
+    Optional<User> findById(Integer id);
 
     Optional<User> findByEmail(String email);
 
@@ -17,11 +18,11 @@ public interface UserDAO {
 
     User update(User user);
 
-    boolean deleteById(Long id);
+    boolean deleteById(Integer id);
 
     void delete(User user);
 
-    boolean existsById(Long id);
+    boolean existsById(Integer id);
 
     long count();
 }
